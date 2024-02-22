@@ -1,0 +1,55 @@
+[gd_scene load_steps=9 format=3 uid="uid://dmbjwtnqw8242"]
+
+[ext_resource type="Texture2D" uid="uid://b6kxi2jqa7ht7" path="res://assets/warped-files/PNG/sprites/Fx/enemy-death/enemy-death-1.png" id="1_b5b0q"]
+[ext_resource type="Texture2D" uid="uid://ditgs5lnnnweq" path="res://assets/warped-files/PNG/sprites/Fx/enemy-death/enemy-death-2.png" id="2_64shg"]
+[ext_resource type="Texture2D" uid="uid://dtvm3t3nu731i" path="res://assets/warped-files/PNG/sprites/Fx/enemy-death/enemy-death-3.png" id="3_d0flt"]
+[ext_resource type="Texture2D" uid="uid://8keiuvia70l5" path="res://assets/warped-files/PNG/sprites/Fx/enemy-death/enemy-death-4.png" id="4_jmwsv"]
+[ext_resource type="Texture2D" uid="uid://cbfgaeljjhm0c" path="res://assets/warped-files/PNG/sprites/Fx/enemy-death/enemy-death-5.png" id="5_2bvyf"]
+[ext_resource type="Texture2D" uid="uid://g57m3k3rb85k" path="res://assets/warped-files/PNG/sprites/Fx/impact/impact-5.png" id="6_rgm2w"]
+[ext_resource type="Script" path="res://ENEMIES/enemy_death_effect.gd" id="7_nucmu"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_d8hm6"]
+animations = [{
+"frames": [],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_b5b0q")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_64shg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_d0flt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_jmwsv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_2bvyf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_rgm2w")
+}],
+"loop": false,
+"name": &"new_animation",
+"speed": 12.0
+}]
+
+[node name="EnemyDeathEffect" type="AnimatedSprite2D"]
+sprite_frames = SubResource("SpriteFrames_d8hm6")
+animation = &"new_animation"
+autoplay = "new_animation"
+frame = 5
+frame_progress = 1.0
+script = ExtResource("7_nucmu")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
