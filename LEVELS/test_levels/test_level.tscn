@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://sbotonpg4uwo"]
 
 [ext_resource type="PackedScene" uid="uid://daig01xkv66ew" path="res://LEVELS/base_level.tscn" id="1_i75wh"]
-[ext_resource type="PackedScene" uid="uid://btjykgan7fjx2" path="res://ENEMIES/enemy_crab.tscn" id="2_jgagl"]
+[ext_resource type="PackedScene" uid="uid://btjykgan7fjx2" path="res://ENEMIES/CRAB/enemy_crab.tscn" id="2_jgagl"]
 [ext_resource type="PackedScene" uid="uid://cu8p8ajjjbhoo" path="res://backgrounds/parallax_background.tscn" id="2_ph6uy"]
 
 [node name="TestLevel" instance=ExtResource("1_i75wh")]

@@ -1,8 +1,9 @@
-[gd_scene load_steps=34 format=3 uid="uid://dfqwf1twec3jb"]
+[gd_scene load_steps=40 format=3 uid="uid://dfqwf1twec3jb"]
 
 [ext_resource type="Script" path="res://PLAYER/player.gd" id="1_a4wo7"]
 [ext_resource type="Texture2D" uid="uid://dsj6hxd66mmfu" path="res://PLAYER/PLAYERSPRITE/player-idle-1.png" id="1_o4fla"]
 [ext_resource type="Texture2D" uid="uid://2fsw5qm3vqfl" path="res://PLAYER/PLAYERSPRITE/player-idle-2.png" id="2_2dp0j"]
+[ext_resource type="Shader" uid="uid://jiex6ss0rjjd" path="res://PLAYER/player_hit_shader.tres" id="2_ann0b"]
 [ext_resource type="Texture2D" uid="uid://bjbopj6783yj6" path="res://PLAYER/PLAYERSPRITE/player-idle-3.png" id="3_rn84v"]
 [ext_resource type="Texture2D" uid="uid://bq2agtab0qp8a" path="res://PLAYER/PLAYERSPRITE/player-idle-4.png" id="4_37vhw"]
 [ext_resource type="Texture2D" uid="uid://056kaskeqrn0" path="res://PLAYER/PLAYERSPRITE/player-run-1.png" id="5_t4dd4"]
@@ -31,6 +32,11 @@
 [ext_resource type="Texture2D" uid="uid://dqlany5a01ekc" path="res://assets/warped-files/PNG/sprites/player/player-run-shot/player-run-shot-8.png" id="29_fjoyi"]
 [ext_resource type="Texture2D" uid="uid://bi78jfypdl6gc" path="res://assets/warped-files/PNG/sprites/player/player-run-shot/player-run-shot-9.png" id="30_g1bbc"]
 [ext_resource type="Texture2D" uid="uid://7pf5cfx2f7qj" path="res://assets/warped-files/PNG/sprites/player/player-run-shot/player-run-shot-10.png" id="31_ru61r"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dn3kr"]
+shader = ExtResource("2_ann0b")
+shader_parameter/enabled = false
+shader_parameter/hit_color = Color(1, 0, 0, 1)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_wu7hd"]
 animations = [{
@@ -154,19 +160,79 @@ animations = [{
 radius = 9.0
 height = 40.0
 
-[node name="Player" type="CharacterBody2D"]
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_cuoo4"]
+
+[sub_resource type="Animation" id="Animation_of4ck"]
+resource_name = "HIT"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:material:shader_parameter/enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="Animation" id="Animation_y5amy"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:material:shader_parameter/enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_s64qy"]
+_data = {
+"HIT": SubResource("Animation_of4ck"),
+"RESET": SubResource("Animation_y5amy")
+}
+
+[node name="Player" type="CharacterBody2D" groups=["Player"]]
 collision_layer = 2
 script = ExtResource("1_a4wo7")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_dn3kr")
 position = Vector2(0, -24)
 sprite_frames = SubResource("SpriteFrames_wu7hd")
 animation = &"RUN_SHOOT"
 autoplay = "IDLE"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(0, -20)
 shape = SubResource("CapsuleShape2D_yi4c4")
 
 [node name="Muzzle" type="Marker2D" parent="."]
+visible = false
 position = Vector2(19, -24)
+
+[node name="Hurtbox" type="Area2D" parent="."]
+visible = false
+collision_layer = 2
+collision_mask = 4
+
+[node name="HurtBoxCollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+visible = false
+position = Vector2(0, -19)
+shape = SubResource("CapsuleShape2D_cuoo4")
+debug_color = Color(0.933333, 0.12549, 0.560784, 0.419608)
+
+[node name="HitAnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_s64qy")
+}
+
+[connection signal="body_entered" from="Hurtbox" to="." method="_on_hurtbox_body_entered"]

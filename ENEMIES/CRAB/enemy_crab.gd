@@ -8,6 +8,7 @@ var current_hp : int = MAX_HP
 @export var GRAVITY : int = 1000
 @export var SPEED : int = 200
 @export var patrol_points : Node
+@export var damage_amount : int = 1
 enum State{IDLE,WALK}
 var current_state : State
 var direction : Vector2 = Vector2.LEFT
@@ -90,11 +91,9 @@ func _on_timer_timeout():
 
 
 func _on_hurtbox_area_entered(area: Area2D):
-	print("hurtbox area entered")
 	var parent_node = area.get_parent()
 	if parent_node.has_method("get_damage_amount"):
-		var damage_amount = parent_node.get_damage_amount()
-		current_hp -= damage_amount
+		current_hp -= parent_node.get_damage_amount()
 	if current_hp<=0:
 		var enemy_death_effect_instance = enemy_death_effect.instantiate() as Node2D
 		enemy_death_effect_instance.global_position=global_position

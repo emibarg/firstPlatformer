@@ -1,0 +1,127 @@
+[gd_scene load_steps=21 format=3 uid="uid://dolbk546806jy"]
+
+[ext_resource type="Texture2D" uid="uid://dl42m0w50fpam" path="res://assets/Enemies Pack FIles/Sprites/Dino/dino1.png" id="1_g65wm"]
+[ext_resource type="Script" path="res://ENEMIES/DINO/enemy_dino.gd" id="1_ktsr2"]
+[ext_resource type="Texture2D" uid="uid://cvbq1u38risqu" path="res://assets/Enemies Pack FIles/Sprites/Dino/dino2.png" id="2_bo5cy"]
+[ext_resource type="Texture2D" uid="uid://cr3itq48iiwr" path="res://assets/Enemies Pack FIles/Sprites/Dino/dino3.png" id="3_kpln6"]
+[ext_resource type="Texture2D" uid="uid://qa8coqg0da68" path="res://assets/Enemies Pack FIles/Sprites/Dino/dino4.png" id="4_ygqtr"]
+[ext_resource type="Texture2D" uid="uid://b8t7a0wroef5u" path="res://assets/Enemies Pack FIles/Sprites/Dino/dino5.png" id="5_2xuht"]
+[ext_resource type="Texture2D" uid="uid://cjpk4h4f1tano" path="res://assets/Enemies Pack FIles/Sprites/Dino/dino6.png" id="6_me1qk"]
+[ext_resource type="Texture2D" uid="uid://cqxuifd5lkngv" path="res://assets/Enemies Pack FIles/Sprites/Dino/dino7.png" id="7_fvffa"]
+[ext_resource type="Texture2D" uid="uid://cth3wae1gsnk1" path="res://assets/Enemies Pack FIles/Sprites/Dino-Idle/dino-idle1.png" id="8_dwtdp"]
+[ext_resource type="Texture2D" uid="uid://dwb8p0fubtymp" path="res://assets/Enemies Pack FIles/Sprites/Dino-Idle/dino-idle2.png" id="9_4o4hh"]
+[ext_resource type="Texture2D" uid="uid://d3qmv03xdkhmb" path="res://assets/Enemies Pack FIles/Sprites/Dino-Idle/dino-idle3.png" id="10_nn10q"]
+[ext_resource type="Texture2D" uid="uid://bdcxiehfvwadl" path="res://assets/Enemies Pack FIles/Sprites/Dino-Idle/dino-idle4.png" id="11_h5b8t"]
+[ext_resource type="Script" path="res://ENEMIES/DINO/Gravity.gd" id="12_2cm1f"]
+[ext_resource type="Script" path="res://ENEMIES/DINO/StateMachineController.gd" id="13_b1y4x"]
+[ext_resource type="Script" path="res://scripts/StateMachine/node_finite_state_machine.gd" id="13_d6yit"]
+[ext_resource type="Script" path="res://ENEMIES/DINO/IdleState.gd" id="14_k33p4"]
+[ext_resource type="Script" path="res://ENEMIES/DINO/AttackState.gd" id="15_2e3ha"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_c6qe3"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_g65wm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_bo5cy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_kpln6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_ygqtr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_2xuht")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_me1qk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_fvffa")
+}],
+"loop": true,
+"name": &"ATTACK",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_dwtdp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_4o4hh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_nn10q")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_h5b8t")
+}],
+"loop": true,
+"name": &"IDLE",
+"speed": 12.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_67olb"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7bcr3"]
+size = Vector2(258, 77)
+
+[node name="EnemyDino" type="CharacterBody2D" groups=["Enemy"]]
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_ktsr2")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_c6qe3")
+animation = &"ATTACK"
+autoplay = "IDLE"
+frame = 4
+frame_progress = 0.995642
+
+[node name="Gravity" type="Node" parent="." node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d")]
+script = ExtResource("12_2cm1f")
+character_body_2d = NodePath("..")
+animated_sprite_2d = NodePath("../AnimatedSprite2D")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1, 3)
+shape = SubResource("CircleShape2D_67olb")
+
+[node name="StateMachineController" type="Node" parent="." node_paths=PackedStringArray("node_finite_state_machine")]
+script = ExtResource("13_b1y4x")
+node_finite_state_machine = NodePath("../StateMachine")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_node_state")]
+script = ExtResource("13_d6yit")
+initial_node_state = NodePath("IDLE")
+
+[node name="IDLE" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d")]
+script = ExtResource("14_k33p4")
+character_body_2d = NodePath("../..")
+animated_sprite_2d = NodePath("../../AnimatedSprite2D")
+
+[node name="ATTACK" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d")]
+script = ExtResource("15_2e3ha")
+character_body_2d = NodePath("../..")
+animated_sprite_2d = NodePath("../../AnimatedSprite2D")
+speed = 200
+
+[node name="AttackArea" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
+position = Vector2(-1, 2)
+shape = SubResource("RectangleShape2D_7bcr3")
+debug_color = Color(0.709804, 0.486275, 0, 0.419608)
+
+[connection signal="body_entered" from="AttackArea" to="StateMachineController" method="_on_attack_area_body_entered"]
+[connection signal="body_exited" from="AttackArea" to="StateMachineController" method="_on_attack_area_body_exited"]

@@ -11,13 +11,15 @@ config_version=5
 [application]
 
 config/name="platformer"
-run/main_scene="res://LEVELS/base_level.tscn"
+run/main_scene="res://UI/main_menu_screen.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
 GameManager="*res://scripts/game_manager.gd"
+HealthManager="*res://scripts/health_manager.gd"
+ColectibleManager="*res://scripts/colectible_manager.gd"
 
 [display]
 
@@ -26,6 +28,10 @@ window/size/viewport_height=270
 window/size/window_width_override=960
 window/size/window_height_override=540
 window/stretch/mode="viewport"
+
+[dotnet]
+
+project/assembly_name="platformer"
 
 [input]
 
@@ -61,6 +67,8 @@ shoot={
 2d_physics/layer_1="GROUND"
 2d_physics/layer_2="PLAYER"
 2d_physics/layer_3="ENEMY"
+2d_physics/layer_4="PICKUPS"
+2d_physics/layer_5="COLECTIBLES"
 
 [rendering]
 

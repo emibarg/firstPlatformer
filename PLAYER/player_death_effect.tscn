@@ -1,0 +1,91 @@
+[gd_scene load_steps=15 format=3 uid="uid://cu3k64p3ss7c2"]
+
+[ext_resource type="Script" path="res://PLAYER/player_death_effect.gd" id="1_qh8tl"]
+[ext_resource type="Texture2D" uid="uid://gqc05dkmwbob" path="res://PLAYER/DEATH_EFFECT/spark1.png" id="1_w3rsq"]
+[ext_resource type="Texture2D" uid="uid://d1d2tx38drw3m" path="res://PLAYER/DEATH_EFFECT/spark2.png" id="2_y74vc"]
+[ext_resource type="Texture2D" uid="uid://dtbopelj12aee" path="res://PLAYER/DEATH_EFFECT/spark3.png" id="3_5n40x"]
+[ext_resource type="Texture2D" uid="uid://dovthcv06en5y" path="res://PLAYER/DEATH_EFFECT/spark4.png" id="4_2073v"]
+[ext_resource type="Texture2D" uid="uid://djcw2xefowqo6" path="res://PLAYER/DEATH_EFFECT/spark5.png" id="5_7n8e2"]
+[ext_resource type="Texture2D" uid="uid://iinnrwmte7ui" path="res://PLAYER/DEATH_EFFECT/spark6.png" id="6_e7r4l"]
+[ext_resource type="Texture2D" uid="uid://m1oidh1ksxuj" path="res://PLAYER/DEATH_EFFECT/spark7.png" id="7_um3xa"]
+[ext_resource type="Texture2D" uid="uid://btro2tyya605f" path="res://PLAYER/DEATH_EFFECT/spark8.png" id="8_a2en4"]
+[ext_resource type="Texture2D" uid="uid://cjjbxl1y2dhcg" path="res://PLAYER/DEATH_EFFECT/spark_dot.png" id="9_ewohj"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_cybkd"]
+animations = [{
+"frames": [],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_w3rsq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_y74vc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_5n40x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_2073v")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_7n8e2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_e7r4l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_um3xa")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_a2en4")
+}],
+"loop": true,
+"name": &"new_animation",
+"speed": 12.0
+}]
+
+[sub_resource type="Gradient" id="Gradient_klnjx"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_l8ewl"]
+gradient = SubResource("Gradient_klnjx")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_kotb5"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(35, 35, 35)
+emission_shape = 1
+emission_sphere_radius = 1.0
+direction = Vector3(0, -0.5, 0)
+initial_velocity_min = 30.0
+initial_velocity_max = 30.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.1
+scale_max = 0.5
+color = Color(0.709804, 0.85098, 1, 1)
+color_ramp = SubResource("GradientTexture1D_l8ewl")
+anim_speed_min = 0.5
+anim_speed_max = 0.5
+
+[node name="PlayerDeathEffect" type="Node2D"]
+script = ExtResource("1_qh8tl")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_cybkd")
+animation = &"new_animation"
+autoplay = "new_animation"
+frame_progress = 0.58964
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+position = Vector2(0, -6)
+amount = 100
+process_material = SubResource("ParticleProcessMaterial_kotb5")
+texture = ExtResource("9_ewohj")
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

@@ -1,0 +1,60 @@
+[gd_scene load_steps=11 format=3 uid="uid://cebebqeey40xn"]
+
+[ext_resource type="Texture2D" uid="uid://mgcavs456ipg" path="res://assets/warped-files/PNG/sprites/Fx/power-up/power-up-1.png" id="1_clu0f"]
+[ext_resource type="Script" path="res://Pickups/Health_Pickups/health_pickup.gd" id="1_kii6u"]
+[ext_resource type="Texture2D" uid="uid://brwkbwiwdp7ws" path="res://assets/warped-files/PNG/sprites/Fx/power-up/power-up-2.png" id="2_gijqh"]
+[ext_resource type="Texture2D" uid="uid://dgwtvyklhycxq" path="res://assets/warped-files/PNG/sprites/Fx/power-up/power-up-3.png" id="3_d6v0l"]
+[ext_resource type="Texture2D" uid="uid://cph1cl7srdo1" path="res://assets/warped-files/PNG/sprites/Fx/power-up/power-up-4.png" id="4_v0sam"]
+[ext_resource type="Texture2D" uid="uid://bs62qqmoa7tue" path="res://assets/warped-files/PNG/sprites/Fx/power-up/power-up-5.png" id="5_cklt4"]
+[ext_resource type="Texture2D" uid="uid://c3c180k563gi5" path="res://assets/warped-files/PNG/sprites/Fx/power-up/power-up-6.png" id="6_ywcv7"]
+[ext_resource type="Texture2D" uid="uid://bsyhd0kalj7s5" path="res://assets/warped-files/PNG/sprites/Fx/power-up/power-up-7.png" id="7_0sw3m"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_5snj8"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_clu0f")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_gijqh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_d6v0l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_v0sam")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_cklt4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_ywcv7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_0sw3m")
+}],
+"loop": true,
+"name": &"default",
+"speed": 12.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6m7x2"]
+radius = 4.47214
+
+[node name="HealthPickup" type="Node2D"]
+script = ExtResource("1_kii6u")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_5snj8")
+autoplay = "default"
+frame_progress = 0.992808
+
+[node name="HealthPickupBox" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HealthPickupBox"]
+position = Vector2(0, 1)
+shape = SubResource("CircleShape2D_6m7x2")
+
+[connection signal="body_entered" from="HealthPickupBox" to="." method="_on_health_pickup_box_body_entered"]
