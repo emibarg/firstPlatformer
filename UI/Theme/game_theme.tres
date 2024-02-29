@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=7 format=3 uid="uid://ct2py4p54rh12"]
+[gd_resource type="Theme" load_steps=8 format=3 uid="uid://ct2py4p54rh12"]
 
 [ext_resource type="FontFile" uid="uid://buhbx8srqqh7c" path="res://UI/GravityRegular5.ttf" id="1_ty7px"]
 
@@ -53,6 +53,9 @@ border_color = Color(0.231373, 0.0666667, 0.345098, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kqdmf"]
 bg_color = Color(0.443137, 0.0352941, 0.321569, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ipyil"]
+bg_color = Color(0.552941, 0.447059, 0.866667, 1)
+
 [resource]
 Button/font_sizes/font_size = 14
 Button/fonts/font = ExtResource("1_ty7px")
@@ -65,3 +68,5 @@ MarginContainer/constants/margin_left = 10
 MarginContainer/constants/margin_right = 10
 MarginContainer/constants/margin_top = 10
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_kqdmf")
+PopupMenu/fonts/font = ExtResource("1_ty7px")
+PopupMenu/styles/panel = SubResource("StyleBoxFlat_ipyil")

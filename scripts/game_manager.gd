@@ -4,6 +4,7 @@ var PAUSE_MENU_SCREEN = preload("res://UI/pause_menu_screen.tscn")
 var MAIN_MENU_SCREEN = preload("res://UI/main_menu_screen.tscn")
 func _ready():
 	RenderingServer.set_default_clear_color(Color(0.53, 0, 0.39, 1.00) )
+	SettingsManager.load_settings()
 
 func start_game():
 	if get_tree().is_paused():
